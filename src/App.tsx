@@ -42,6 +42,8 @@ const App = () => (
             <Route path="/notices/post" element={<ProtectedRoute><PostNotice /></ProtectedRoute>} />
             <Route path="/visitors" element={<ProtectedRoute><VisitorManagement /></ProtectedRoute>} />
             <Route path="/visitors/add" element={<ProtectedRoute><AddVisitor /></ProtectedRoute>} />
+            <Route path="/maintenance" element={<ProtectedRoute><PredictiveMaintenance /></ProtectedRoute>} />
+            <Route path="/performance" element={<ProtectedRoute><StaffPerformance /></ProtectedRoute>} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

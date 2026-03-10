@@ -19,6 +19,8 @@ const NAV = {
     { title: "All Complaints", url: "/complaints", icon: ClipboardList },
     { title: "User Management", url: "/users", icon: Users },
     { title: "Visitors", url: "/visitors", icon: UserCheck },
+    { title: "Maintenance Alerts", url: "/maintenance", icon: Wrench },
+    { title: "Staff Performance", url: "/performance", icon: Star },
   ],
   staff: [
     { title: "My Complaints", url: "/dashboard", icon: ClipboardList },
