@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  LayoutDashboard, ClipboardList, Users, Bell, UserCheck, LogOut, Building2, Menu,
+  LayoutDashboard, ClipboardList, Users, Bell, UserCheck, LogOut, Building2, Wrench, Star,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
