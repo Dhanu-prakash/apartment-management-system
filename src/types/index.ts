@@ -25,6 +25,8 @@ export interface Complaint {
   assignedStaffName?: string;
   createdAt: string;
   resolvedAt?: string;
+  rating?: number; // 1-5 star rating
+  ratingComment?: string;
 }
 
 export interface Notice {
@@ -44,4 +46,14 @@ export interface Visitor {
   time: string;
   purpose: string;
   addedBy: string;
+  entryTime?: string;
+  exitTime?: string;
+  phone?: string;
+}
+
+export interface MaintenanceAlert {
+  location: string;
+  issue: string;
+  count: number;
+  complaints: Complaint[];
 }

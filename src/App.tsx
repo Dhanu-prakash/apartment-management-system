@@ -14,6 +14,8 @@ import PostNotice from "./pages/PostNotice";
 import VisitorManagement from "./pages/VisitorManagement";
 import AddVisitor from "./pages/AddVisitor";
 import ResidentDashboard from "./pages/ResidentDashboard";
+import PredictiveMaintenance from "./pages/PredictiveMaintenance";
+import StaffPerformance from "./pages/StaffPerformance";
 import AppLayout from "./components/AppLayout";
 import NotFound from "./pages/NotFound";
 
@@ -40,6 +42,8 @@ const App = () => (
             <Route path="/notices/post" element={<ProtectedRoute><PostNotice /></ProtectedRoute>} />
             <Route path="/visitors" element={<ProtectedRoute><VisitorManagement /></ProtectedRoute>} />
             <Route path="/visitors/add" element={<ProtectedRoute><AddVisitor /></ProtectedRoute>} />
+            <Route path="/maintenance" element={<ProtectedRoute><PredictiveMaintenance /></ProtectedRoute>} />
+            <Route path="/performance" element={<ProtectedRoute><StaffPerformance /></ProtectedRoute>} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
