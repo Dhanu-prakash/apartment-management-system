@@ -14,6 +14,8 @@ import PostNotice from "./pages/PostNotice";
 import VisitorManagement from "./pages/VisitorManagement";
 import AddVisitor from "./pages/AddVisitor";
 import ResidentDashboard from "./pages/ResidentDashboard";
+import PredictiveMaintenance from "./pages/PredictiveMaintenance";
+import StaffPerformance from "./pages/StaffPerformance";
 import AppLayout from "./components/AppLayout";
 import NotFound from "./pages/NotFound";
 
