@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, Star } from "lucide-react";
 import { toast } from "sonner";
 
 const STATUS_BADGE: Record<string, string> = {
@@ -18,12 +18,25 @@ const STATUS_BADGE: Record<string, string> = {
   resolved: "bg-success/10 text-success",
 };
 
+function RatingStars({ rating, onRate }: { rating: number; onRate: (r: number) => void }) {
+  return (
+    <div className="flex items-center gap-0.5">
+      {[1, 2, 3, 4, 5].map(s => (
+        <button key={s} type="button" onClick={() => onRate(s)} className="focus:outline-none">
+          <Star className={`w-5 h-5 transition-colors ${s <= rating ? "text-warning fill-warning" : "text-muted-foreground/30 hover:text-warning/50"}`} />
+        </button>
+      ))}
+    </div>
+  );
+}
+
 export default function ResidentDashboard() {
   const { user } = useAuth();
   const [complaints, setComplaintsState] = useState(getComplaints);
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [type, setType] = useState<ComplaintType>("normal");
+  const [ratingState, setRatingState] = useState<Record<string, { rating: number; comment: string }>>({});
 
   const myComplaints = complaints.filter(c => c.residentId === user?.id);
 
@@ -44,6 +57,16 @@ export default function ResidentDashboard() {
     setComplaintsState(updated);
     setTitle(""); setDesc(""); setType("normal");
     toast.success("Complaint submitted successfully");
+  };
+
+  const handleRate = (complaintId: string) => {
+    const rs = ratingState[complaintId];
+    if (!rs || rs.rating === 0) return;
+    const updated = complaints.map(c => c.id === complaintId ? { ...c, rating: rs.rating, ratingComment: rs.comment } : c);
+    setComplaints(updated);
+    setComplaintsState(updated);
+    setRatingState(prev => { const n = { ...prev }; delete n[complaintId]; return n; });
+    toast.success("Thank you for your feedback!");
   };
 
   return (
@@ -86,16 +109,50 @@ export default function ResidentDashboard() {
           ) : (
             <div className="space-y-3">
               {myComplaints.map(c => (
-                <div key={c.id} className="rounded-xl border border-border p-4 flex items-start justify-between gap-3">
-                  <div className="space-y-1">
-                    <h3 className="text-sm font-semibold text-foreground">{c.title}</h3>
-                    <p className="text-xs text-muted-foreground">{c.description}</p>
-                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                      <Badge variant="outline" className="capitalize text-xs">{c.type}</Badge>
-                      {c.assignedStaffName && <span>• Assigned to {c.assignedStaffName}</span>}
+                <div key={c.id} className="rounded-xl border border-border p-4 space-y-3">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="space-y-1">
+                      <h3 className="text-sm font-semibold text-foreground">{c.title}</h3>
+                      <p className="text-xs text-muted-foreground">{c.description}</p>
+                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                        <Badge variant="outline" className="capitalize text-xs">{c.type}</Badge>
+                        {c.assignedStaffName && <span>• Assigned to {c.assignedStaffName}</span>}
+                      </div>
                     </div>
+                    <Badge className={`capitalize text-xs shrink-0 ${STATUS_BADGE[c.status]}`}>{c.status}</Badge>
                   </div>
-                  <Badge className={`capitalize text-xs shrink-0 ${STATUS_BADGE[c.status]}`}>{c.status}</Badge>
+
+                  {/* Rating section for resolved complaints */}
+                  {c.status === "resolved" && !c.rating && (
+                    <div className="rounded-lg bg-muted/50 p-3 space-y-2 border border-border/50">
+                      <p className="text-xs font-medium text-foreground">Rate this service ⭐</p>
+                      <RatingStars
+                        rating={ratingState[c.id]?.rating || 0}
+                        onRate={r => setRatingState(prev => ({ ...prev, [c.id]: { ...prev[c.id], rating: r, comment: prev[c.id]?.comment || "" } }))}
+                      />
+                      <Input
+                        placeholder="Optional feedback..."
+                        className="text-xs h-8"
+                        value={ratingState[c.id]?.comment || ""}
+                        onChange={e => setRatingState(prev => ({ ...prev, [c.id]: { ...prev[c.id], rating: prev[c.id]?.rating || 0, comment: e.target.value } }))}
+                      />
+                      <Button size="sm" onClick={() => handleRate(c.id)} disabled={!ratingState[c.id]?.rating} className="text-xs">
+                        Submit Rating
+                      </Button>
+                    </div>
+                  )}
+
+                  {c.rating && (
+                    <div className="flex items-center gap-2 text-xs">
+                      <span className="text-muted-foreground">Your rating:</span>
+                      <div className="flex items-center gap-0.5">
+                        {[1, 2, 3, 4, 5].map(s => (
+                          <Star key={s} className={`w-3 h-3 ${s <= c.rating! ? "text-warning fill-warning" : "text-muted-foreground/30"}`} />
+                        ))}
+                      </div>
+                      {c.ratingComment && <span className="text-muted-foreground italic">"{c.ratingComment}"</span>}
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
