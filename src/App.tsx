@@ -16,6 +16,9 @@ import AddVisitor from "./pages/AddVisitor";
 import ResidentDashboard from "./pages/ResidentDashboard";
 import PredictiveMaintenance from "./pages/PredictiveMaintenance";
 import StaffPerformance from "./pages/StaffPerformance";
+import EmergencyAlerts from "./pages/EmergencyAlerts";
+import Reports from "./pages/Reports";
+import SystemInfo from "./pages/SystemInfo";
 import AppLayout from "./components/AppLayout";
 import NotFound from "./pages/NotFound";
 
@@ -44,6 +47,9 @@ const App = () => (
             <Route path="/visitors/add" element={<ProtectedRoute><AddVisitor /></ProtectedRoute>} />
             <Route path="/maintenance" element={<ProtectedRoute><PredictiveMaintenance /></ProtectedRoute>} />
             <Route path="/performance" element={<ProtectedRoute><StaffPerformance /></ProtectedRoute>} />
+            <Route path="/emergency" element={<ProtectedRoute><EmergencyAlerts /></ProtectedRoute>} />
+            <Route path="/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+            <Route path="/system-info" element={<ProtectedRoute><SystemInfo /></ProtectedRoute>} />
             <Route path="/" element={<Navigate to="/dashboard" replace />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

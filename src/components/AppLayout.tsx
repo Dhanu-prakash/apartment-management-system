@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import {
-  LayoutDashboard, ClipboardList, Users, Bell, UserCheck, LogOut, Building2, Wrench, Star,
+  LayoutDashboard, ClipboardList, Users, Bell, UserCheck, LogOut, Building2, Wrench, Star, AlertTriangle, FileText, Wifi,
 } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
@@ -21,11 +21,15 @@ const NAV = {
     { title: "Visitors", url: "/visitors", icon: UserCheck },
     { title: "Maintenance Alerts", url: "/maintenance", icon: Wrench },
     { title: "Staff Performance", url: "/performance", icon: Star },
+    { title: "Emergency Alerts", url: "/emergency", icon: AlertTriangle },
+    { title: "Reports", url: "/reports", icon: FileText },
+    { title: "System Info", url: "/system-info", icon: Wifi },
   ],
   staff: [
     { title: "My Complaints", url: "/dashboard", icon: ClipboardList },
     { title: "Post Notice", url: "/notices/post", icon: Bell },
     { title: "Add Visitor", url: "/visitors/add", icon: UserCheck },
+    { title: "Emergency Alerts", url: "/emergency", icon: AlertTriangle },
   ],
   resident: [
     { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
@@ -33,6 +37,7 @@ const NAV = {
     { title: "Community", url: "/community", icon: Users },
     { title: "Notices", url: "/notices", icon: Bell },
     { title: "My Visitors", url: "/visitors", icon: UserCheck },
+    { title: "Emergency", url: "/emergency", icon: AlertTriangle },
   ],
 };
 
