@@ -91,3 +91,18 @@
     font-family: 'Inter', sans-serif;
   }
 }
+
+@media print {
+  .no-print, nav, header, aside, [data-sidebar] {
+    display: none !important;
+  }
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  .print-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin-bottom: 1rem;
+  }
+}

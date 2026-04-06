@@ -57,3 +57,19 @@ export interface MaintenanceAlert {
   count: number;
   complaints: Complaint[];
 }
+
+export type EmergencyType = "fire" | "medical" | "security" | "other";
+
+export interface EmergencyAlert {
+  id: string;
+  residentId: string;
+  residentName: string;
+  flat: string;
+  message: string;
+  type: EmergencyType;
+  createdAt: string;
+  acknowledged: boolean;
+  acknowledgedBy?: string;
+  acknowledgedByName?: string;
+  acknowledgedAt?: string;
+}
