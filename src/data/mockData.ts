@@ -1,4 +1,4 @@
-import { User, Complaint, Notice, Visitor } from "@/types";
+import { User, Complaint, Notice, Visitor, EmergencyAlert } from "@/types";
 
 export const SEED_USERS: User[] = [
   { id: "u1", name: "Priya Sharma", email: "admin@demo.com", password: "admin123", role: "admin" },
@@ -56,7 +56,16 @@ export const SEED_VISITORS: Visitor[] = [
 ];
 
 // LocalStorage helpers
-const KEYS = { users: "ams_users", complaints: "ams_complaints", notices: "ams_notices", visitors: "ams_visitors", session: "ams_session", roundRobin: "ams_rr" };
+export const SEED_EMERGENCY: EmergencyAlert[] = [
+  {
+    id: "ea1", residentId: "u4", residentName: "Amit Kumar", flat: "A-101",
+    message: "Fire in kitchen area!", type: "fire",
+    createdAt: "2026-02-09T23:15:00", acknowledged: true,
+    acknowledgedBy: "u2", acknowledgedByName: "Rahul Verma", acknowledgedAt: "2026-02-09T23:18:00",
+  },
+];
+
+const KEYS = { users: "ams_users", complaints: "ams_complaints", notices: "ams_notices", visitors: "ams_visitors", session: "ams_session", roundRobin: "ams_rr", emergency: "ams_emergency" };
 
 function init<T>(key: string, seed: T[]): T[] {
   const stored = localStorage.getItem(key);
@@ -76,6 +85,9 @@ export function setNotices(n: Notice[]) { localStorage.setItem(KEYS.notices, JSO
 
 export function getVisitors(): Visitor[] { return init(KEYS.visitors, SEED_VISITORS); }
 export function setVisitors(v: Visitor[]) { localStorage.setItem(KEYS.visitors, JSON.stringify(v)); }
+
+export function getEmergencyAlerts(): EmergencyAlert[] { return init(KEYS.emergency, SEED_EMERGENCY); }
+export function setEmergencyAlerts(a: EmergencyAlert[]) { localStorage.setItem(KEYS.emergency, JSON.stringify(a)); }
 
 export function getSession(): User | null {
   const s = localStorage.getItem(KEYS.session);
