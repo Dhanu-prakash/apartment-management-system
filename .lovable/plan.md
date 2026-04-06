@@ -1,67 +1,53 @@
 
 
-# Apartment Management System
+# Sprint 2 Features: Emergency Alerts, Reports & LAN Info
 
-A modern, SaaS-style apartment management web app with role-based access for Admin, Staff, and Resident users. Uses mock authentication with hardcoded demo users and localStorage for data persistence — perfect for a college mini project demo.
+## Overview
+Add three features from the backlog: a Panic Button alert system, a report generation page, and a LAN deployment info section.
 
 ---
 
-## 1. Login Page
-- Clean, centered login form with email and password fields
-- Three demo accounts pre-configured (Admin, Staff, Resident) with credentials shown on the page for easy demo
-- After login, redirect to the appropriate role-based dashboard
-- Session stored in localStorage
+## 1. Emergency Alert System (Panic Button) 🔐
+**What**: Residents can trigger an emergency alert visible to Admin and Staff instantly.
 
-## 2. App Layout
-- **Left sidebar** with role-based navigation links (only shows pages relevant to the logged-in user's role)
-- **Top bar** showing page title, user name, and a role badge (e.g., "Admin" in a colored chip)
-- **Main content area** with card-based layouts and clean tables
-- Logout button in sidebar
-- Modern SaaS styling: light background, Inter font, subtle shadows, consistent spacing
+- Add an `EmergencyAlert` type to `types/index.ts` with fields: id, residentId, residentName, flat, message, type (fire/medical/security/other), createdAt, acknowledged, acknowledgedBy
+- Add seed data and localStorage helpers in `mockData.ts`
+- Create `EmergencyAlerts.tsx` page:
+  - **Resident view**: Large panic button + optional message + alert type selector. Shows history of their past alerts
+  - **Admin/Staff view**: List of all alerts with status (active/acknowledged). Staff can acknowledge alerts. Active alerts highlighted in red
+- Add a persistent emergency button in `AppLayout.tsx` sidebar for residents (red button, always visible)
+- Add `/emergency` route and nav links for all roles
 
-## 3. Admin Dashboard
-- **Overview cards**: Total complaints, Open, Assigned, Resolved counts
-- **Complaints table**: Shows all complaints with type, status badge, assigned staff, and resident info (hidden for anonymous)
-- **Staff workload section**: Cards or table showing each staff member and their active complaint count
-- Admin **cannot** resolve complaints — no action buttons on complaints
+## 2. Generate Reports (Admin only) 📊
+**What**: Admin can generate summary reports as downloadable content or printable views.
 
-## 4. User Management (Admin only)
-- Form to add new users with name, email, password, and role (Staff or Resident) + flat number for residents
-- Table listing all users with their role and details
-- Simple and clearly separated tab/page
+- Create `Reports.tsx` page with report options:
+  - **Complaint Summary**: Total/open/assigned/resolved counts by date range, breakdown by type and block
+  - **Staff Performance**: Resolution times, ratings per staff member
+  - **Visitor Log**: Visitor entries filtered by date range
+  - **Maintenance Alerts**: Current recurring issues summary
+- Each report rendered as a styled printable card section
+- "Print Report" button using `window.print()` with print-friendly CSS
+- Add `/reports` route, nav link for Admin
 
-## 5. Staff Dashboard
-- Shows only complaints assigned to the logged-in staff member
-- Each complaint displayed as a card with details (title, description, type, status badge)
-- "Mark as Resolved" button on each assigned complaint
-- **Post Notice** section: form to create a new notice with title and content
+## 3. Local LAN-Based Residential System ℹ️
+**What**: An info card explaining the LAN deployment concept (for viva explanation).
 
-## 6. Resident Dashboard
-- **Submit Complaint** form: title, description, and type selector (Normal / Anonymous / Community)
-- **My Complaints** section: list of own complaints with status badges
-- **Community Complaints** feed: shared view of all community-type complaints
-- **My Visitors** section: table of visitor entries for the resident's flat
-- **Notice Board**: feed of notices posted by staff, newest first
+- Add a small "System Info" or "Network" page accessible to Admin
+- Shows explanation: the app is hosted on a local server, residents connect via the local IP address (e.g., `192.168.1.x:5173`), no internet data required
+- Displays current `window.location.href` as a demo of the concept
+- Add `/system-info` route for Admin nav
 
-## 7. Complaint Workflow
-- When a resident submits a complaint, it starts as **Open**
-- Auto-assigned to a staff member via round-robin, status becomes **Assigned**
-- Staff marks it **Resolved**
-- Anonymous complaints hide resident identity from all views
-- Community complaints appear in the shared resident feed
+## Technical Changes
 
-## 8. Notice Board
-- Staff can post notices (title + content + timestamp)
-- All residents see notices in a clean card-based feed, newest first
-- Notices visible on Resident Dashboard
-
-## 9. Visitor Management
-- Staff can add visitor entries: visitor name, flat number, date, time, purpose
-- Residents see only visitors to their own flat
-- Admin can view all visitor entries
-
-## 10. Data & State Management
-- All data (users, complaints, notices, visitors) stored in localStorage
-- Pre-seeded with demo data (a few complaints, notices, visitors) for a realistic demo
-- No backend needed — everything runs in the browser
+| File | Change |
+|------|--------|
+| `src/types/index.ts` | Add `EmergencyAlert` interface |
+| `src/data/mockData.ts` | Add emergency alerts seed data + helpers |
+| `src/pages/EmergencyAlerts.tsx` | New — panic button + alert list |
+| `src/pages/Reports.tsx` | New — report generation page |
+| `src/pages/SystemInfo.tsx` | New — LAN deployment info |
+| `src/components/AppLayout.tsx` | Add nav links (Emergency for all, Reports + System Info for admin) |
+| `src/App.tsx` | Add 3 new routes |
+| `src/index.css` | Add print-friendly CSS media query |
 
